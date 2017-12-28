@@ -2,6 +2,7 @@
  * Create a list that holds all of your cards
  */
 
+let deck = ['bolt','bolt','diamond','diamond','paper-plane-o','paper-plane-o','anchor','anchor','leaf','leaf','bicycle','bicycle','bomb','bomb','cube','cube'];
 
 /*
  * Display the cards on the page
@@ -9,6 +10,12 @@
  *   - loop through each card and create its HTML
  *   - add each card's HTML to the page
  */
+deck = shuffle(deck);
+let deckTable = document.querySelectorAll('.card');
+deck.forEach(function(current, index){
+  deckTable[index].firstElementChild.classList.add(`fa-${current}`);
+});
+
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
