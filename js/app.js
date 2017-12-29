@@ -4,13 +4,18 @@
 
 let deck = ['bolt', 'bolt', 'diamond', 'diamond', 'paper-plane-o', 'paper-plane-o', 'anchor', 'anchor', 'leaf', 'leaf', 'bicycle', 'bicycle', 'bomb', 'bomb', 'cube', 'cube'];
 let openList = [];
+let noMatch = false;
+let card1 = null;
+let card2 = null;
+let count = 0;
+let score = 0;
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
  *   - loop through each card and create its HTML
  *   - add each card's HTML to the page
  */
-//deck = shuffle(deck);
+deck = shuffle(deck);
 let deckTable = document.querySelectorAll('.card');
 deck.forEach(function(current, index) {
   deckTable[index].firstElementChild.classList.add(`fa-${current}`);
@@ -38,10 +43,19 @@ function makeCardsClickable() {
   let cards = document.querySelectorAll('.card');
   cards.forEach(function(currentCard) {
     currentCard.addEventListener('click', function() {
+      //Handle where card already clicked
+      if (noMatch === true) {
+        card1.parentElement.classList.remove('miss');
+        card2.parentElement.classList.remove('miss');
+        noMatch = false;
+        return;
+      }
+      if (currentCard.classList.contains('show')) {
+        return;
+      }
       flipCard(currentCard);
       openCard(currentCard);
     });
-
   });
 }
 
@@ -64,24 +78,51 @@ function closeCard(card) {
 function checkMatch(list, currentCard) {
 
   if (list.length === 2) {
-    let card1 = list[0].firstElementChild;
-    let card2 = list[1].firstElementChild;
-    //No match
+    card1 = list[0].firstElementChild;
+    card2 = list[1].firstElementChild;
+    increaseCount(card1, card2);
     if (card1.classList.value !== card2.classList.value) {
-      closeCard(list[0]);
-      flipCard(list[0]);
-      closeCard(list[1]);
-      flipCard(list[1]);
+      isNotMatch(card1, card2, list);
     }
-    //match
     else {
-      card1.parentElement.classList.add('match');
-      card2.parentElement.classList.add('match');
+      isMatch(card1, card2);
     }
-    openList = [];
   }
 }
 
+function isNotMatch(card1, card2, list){
+        card1.parentElement.classList.add('miss');
+        card2.parentElement.classList.add('miss');
+        noMatch = true;
+        closeCard(list[0]);
+        flipCard(list[0]);
+        closeCard(list[1]);
+        flipCard(list[1]);
+        openList = [];
+}
+
+function isMatch(card1, card2) {
+    card1.parentElement.classList.add('match');
+    card2.parentElement.classList.add('match');
+    openList = [];
+    score += 1;
+    if (score === 8){
+      let scoreElement = document.createElement('h1');
+      scoreElement.textContent = `You win! ${count} moves.`;
+      document.body.appendChild(scoreElement);
+    }
+}
+
+function increaseCount(){
+  count +=1;
+  let moves = document.querySelector('.moves')
+  moves.textContent = count;
+  // checkRank();
+}
+
+// function checkRank(){
+//   if count = 12;
+// }
 
 /*
  * set up the event listener for a card. If a card is clicked:

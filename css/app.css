@@ -81,6 +81,13 @@ h1 {
     font-size: 33px;
 }
 
+.deck .card.miss {
+    cursor: default;
+    background: #ba0000;
+    font-size: 33px;
+}
+
+
 /*
  * Styles for the Score Panel
  */
