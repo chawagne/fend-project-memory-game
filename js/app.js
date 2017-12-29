@@ -9,6 +9,7 @@ let card1 = null;
 let card2 = null;
 let count = 0;
 let score = 0;
+let stars = document.querySelectorAll('.stars i');
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
@@ -117,12 +118,17 @@ function increaseCount(){
   count +=1;
   let moves = document.querySelector('.moves')
   moves.textContent = count;
-  // checkRank();
+  checkRank();
 }
 
-// function checkRank(){
-//   if count = 12;
-// }
+ function checkRank(){
+   if (count === 13){
+     stars[2].classList.add('fa-star-o');
+      }
+    if (count === 18){
+      stars[1].classList.add('fa-star-o');
+    }
+ }
 
 /*
  * set up the event listener for a card. If a card is clicked:
