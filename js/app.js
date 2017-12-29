@@ -8,15 +8,16 @@ let noMatch = false;
 let card1 = null;
 let card2 = null;
 let count = 0;
-let score = 0;
+let score = 7;
 let stars = document.querySelectorAll('.stars i');
+let timer = null;
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
  *   - loop through each card and create its HTML
  *   - add each card's HTML to the page
  */
-deck = shuffle(deck);
+//deck = shuffle(deck);
 let deckTable = document.querySelectorAll('.card');
 deck.forEach(function(current, index) {
   deckTable[index].firstElementChild.classList.add(`fa-${current}`);
@@ -44,6 +45,9 @@ function makeCardsClickable() {
   let cards = document.querySelectorAll('.card');
   cards.forEach(function(currentCard) {
     currentCard.addEventListener('click', function() {
+      if (timer === null){
+        timer = performance.now();
+      }
       //Handle where card already clicked
       if (noMatch === true) {
         card1.parentElement.classList.remove('miss');
@@ -109,7 +113,7 @@ function isMatch(card1, card2) {
     score += 1;
     if (score === 8){
       let scoreElement = document.createElement('h1');
-      scoreElement.textContent = `You win! ${count} moves.`;
+      scoreElement.textContent = `You win! ${count} moves. ${((performance.now()-timer)/1000).toFixed(2)} seconds to complete.`;
       document.body.appendChild(scoreElement);
     }
 }
