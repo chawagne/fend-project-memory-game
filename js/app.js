@@ -2,34 +2,84 @@
  * Create a list that holds all of your cards
  */
 
-let deck = ['bolt','bolt','diamond','diamond','paper-plane-o','paper-plane-o','anchor','anchor','leaf','leaf','bicycle','bicycle','bomb','bomb','cube','cube'];
-
+let deck = ['bolt', 'bolt', 'diamond', 'diamond', 'paper-plane-o', 'paper-plane-o', 'anchor', 'anchor', 'leaf', 'leaf', 'bicycle', 'bicycle', 'bomb', 'bomb', 'cube', 'cube'];
+let openList = [];
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
  *   - loop through each card and create its HTML
  *   - add each card's HTML to the page
  */
-deck = shuffle(deck);
+//deck = shuffle(deck);
 let deckTable = document.querySelectorAll('.card');
-deck.forEach(function(current, index){
+deck.forEach(function(current, index) {
   deckTable[index].firstElementChild.classList.add(`fa-${current}`);
 });
 
+makeCardsClickable();
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
+  var currentIndex = array.length,
+    temporaryValue, randomIndex;
 
-    while (currentIndex !== 0) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
+  while (currentIndex !== 0) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
+
+function makeCardsClickable() {
+  let cards = document.querySelectorAll('.card');
+  cards.forEach(function(currentCard) {
+    currentCard.addEventListener('click', function() {
+      flipCard(currentCard);
+      openCard(currentCard);
+    });
+
+  });
+}
+
+function flipCard(currentCard) {
+  currentCard.classList.toggle('show');
+}
+
+
+function openCard(currentCard) {
+  currentCard.classList.toggle('open');
+  openList.push(currentCard);
+  checkMatch(openList, currentCard);
+
+}
+
+function closeCard(card) {
+  card.classList.toggle('open');
+}
+
+function checkMatch(list, currentCard) {
+
+  if (list.length === 2) {
+    let card1 = list[0].firstElementChild;
+    let card2 = list[1].firstElementChild;
+    //No match
+    if (card1.classList.value !== card2.classList.value) {
+      closeCard(list[0]);
+      flipCard(list[0]);
+      closeCard(list[1]);
+      flipCard(list[1]);
     }
-
-    return array;
+    //match
+    else {
+      card1.parentElement.classList.add('match');
+      card2.parentElement.classList.add('match');
+    }
+    openList = [];
+  }
 }
 
 
