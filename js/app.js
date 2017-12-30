@@ -134,6 +134,14 @@ function increaseCount(){
     }
  }
 
+ function resetGame(){
+   timer = null;
+
+   deck.forEach(function(current, index) {
+     deckTable[index].className ='card';
+   });
+ }
+
 /*
  * set up the event listener for a card. If a card is clicked:
  *  - display the card's symbol (put this functionality in another function that you call from this one)
