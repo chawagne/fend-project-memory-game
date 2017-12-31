@@ -1,30 +1,23 @@
-/*
- * Create a list that holds all of your cards
- */
-
+//List of cards
 let deck = ['bolt', 'bolt', 'diamond', 'diamond', 'paper-plane-o', 'paper-plane-o', 'anchor', 'anchor', 'leaf', 'leaf', 'bicycle', 'bicycle', 'bomb', 'bomb', 'cube', 'cube'];
+//Cards opened
 let openList = [];
 let noMatch = false;
+//first opened card
 let card1 = null;
+//second opened card
 let card2 = null;
+//total moves
 let count = 0;
-let score = 7;
+//total successful moves; 8 is a win
+let score = 0;
 let stars = document.querySelectorAll('.stars i');
 let timer = null;
-/*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
- */
-//deck = shuffle(deck);
 let deckTable = document.querySelectorAll('.card');
-deck.forEach(function(current, index) {
-  deckTable[index].firstElementChild.classList.add(`fa-${current}`);
-});
 
+restartGame();
 makeCardsClickable();
-
+createRestartButton();
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
   var currentIndex = array.length,
@@ -39,6 +32,11 @@ function shuffle(array) {
   }
 
   return array;
+}
+
+function createRestartButton() {
+  let restartButton = document.querySelector('.restart')
+  restartButton.addEventListener('click', restartGame);
 }
 
 function makeCardsClickable() {
@@ -126,7 +124,7 @@ function increaseCount(){
 }
 
  function checkRank(){
-   if (count === 13){
+   if (count === 14){
      stars[2].classList.add('fa-star-o');
       }
     if (count === 18){
@@ -134,11 +132,28 @@ function increaseCount(){
     }
  }
 
- function resetGame(){
-   timer = null;
-
+ function restartGame(){
+   console.log('restart')
    deck.forEach(function(current, index) {
      deckTable[index].className ='card';
+   });
+   stars.forEach(function(current, index) {
+     stars[index].className = 'fa fa-star';
+   });
+   openList = [];
+   noMatch = false;
+   card1 = null;
+   card2 = null;
+   count = 0;
+   score = 0;
+   timer = null;
+   let moves = document.querySelector('.moves')
+   moves.textContent = count;
+   deck = shuffle(deck);
+   deckTable = document.querySelectorAll('.card');
+   deck.forEach(function(current, index) {
+     deckTable[index].firstElementChild.className ='fa';
+     deckTable[index].firstElementChild.classList.add(`fa-${current}`);
    });
  }
 
