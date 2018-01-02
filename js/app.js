@@ -109,11 +109,7 @@ function isMatch(card1, card2) {
     card2.parentElement.classList.add('match');
     openList = [];
     score += 1;
-    if (score === 8){
-      let scoreElement = document.createElement('h1');
-      scoreElement.textContent = `You win! ${count} moves. ${((performance.now()-timer)/1000).toFixed(2)} seconds to complete.`;
-      document.body.appendChild(scoreElement);
-    }
+    if (score === 8){showWinner()}
 }
 
 function increaseCount(){
@@ -145,17 +141,23 @@ function increaseCount(){
    card1 = null;
    card2 = null;
    count = 0;
-   score = 0;
+   score = 7;
    timer = null;
    let moves = document.querySelector('.moves')
    moves.textContent = count;
-   deck = shuffle(deck);
+   //deck = shuffle(deck);
    deckTable = document.querySelectorAll('.card');
    deck.forEach(function(current, index) {
      deckTable[index].firstElementChild.className ='fa';
      deckTable[index].firstElementChild.classList.add(`fa-${current}`);
    });
  }
+
+function showWinner(){
+  let winner = document.querySelector('.winner');
+  let stats = document.querySelector('.stats');
+  winner.textContent = `${count} moves. ${((performance.now()-timer)/1000).toFixed(2)} seconds to complete.`
+}
 
 /*
  * set up the event listener for a card. If a card is clicked:

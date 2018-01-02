@@ -114,3 +114,12 @@ h1 {
     float: right;
     cursor: pointer;
 }
+
+.winner {
+  font-size: 2em;
+  position: absolute;
+  color: #3fff00;
+  background-color: green;
+  opacity: .7;
+  z-index: 1;
+}
