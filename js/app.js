@@ -13,7 +13,10 @@ let count = 0;
 let score = 0;
 let stars = document.querySelectorAll('.stars i');
 let timer = null;
+let winnerStars = document.querySelector('.large-stars');
+let winnerStats = document.querySelector('.stats');
 let deckTable = document.querySelectorAll('.card');
+let playAgain = document.querySelector('.play-again');
 
 restartGame();
 makeCardsClickable();
@@ -37,6 +40,7 @@ function shuffle(array) {
 function createRestartButton() {
   let restartButton = document.querySelector('.restart')
   restartButton.addEventListener('click', restartGame);
+  playAgain.addEventListener('click', restartGame);
 }
 
 function makeCardsClickable() {
@@ -129,7 +133,6 @@ function increaseCount(){
  }
 
  function restartGame(){
-   console.log('restart')
    deck.forEach(function(current, index) {
      deckTable[index].className ='card';
    });
@@ -141,22 +144,28 @@ function increaseCount(){
    card1 = null;
    card2 = null;
    count = 0;
-   score = 7;
+   score = 0;
    timer = null;
    let moves = document.querySelector('.moves')
    moves.textContent = count;
-   //deck = shuffle(deck);
+   deck = shuffle(deck);
    deckTable = document.querySelectorAll('.card');
    deck.forEach(function(current, index) {
      deckTable[index].firstElementChild.className ='fa';
      deckTable[index].firstElementChild.classList.add(`fa-${current}`);
    });
+   winnerStars.textContent="";
+   winnerStats.textContent="";
+   playAgain.classList="winner play-again";
  }
 
 function showWinner(){
-  let winner = document.querySelector('.winner');
-  let stats = document.querySelector('.stats');
-  winner.textContent = `${count} moves. ${((performance.now()-timer)/1000).toFixed(2)} seconds to complete.`
+     stars.forEach(function(current, index) {
+       let starClone = stars[index].cloneNode(true);
+       winnerStars.appendChild(starClone);
+     });
+  winnerStats.textContent = `${count} moves. ${((performance.now()-timer)/1000).toFixed(2)} seconds to complete.`
+  playAgain.classList.toggle('show');
 }
 
 /*
