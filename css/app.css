@@ -124,6 +124,10 @@ h1 {
 
 }
 
+/*
+ * Styles for game end screen
+ */
+
 .stats {
   top: 470px;
   font-size: 2em;

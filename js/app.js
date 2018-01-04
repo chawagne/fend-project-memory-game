@@ -13,9 +13,11 @@ let count = 0;
 let score = 0;
 let stars = document.querySelectorAll('.stars i');
 let timer = null;
+//list of all cards
+let deckTable = document.querySelectorAll('.card');
+//elements shown when the game ends
 let winnerStars = document.querySelector('.large-stars');
 let winnerStats = document.querySelector('.stats');
-let deckTable = document.querySelectorAll('.card');
 let playAgain = document.querySelector('.play-again');
 
 restartGame();
@@ -50,13 +52,14 @@ function makeCardsClickable() {
       if (timer === null){
         timer = performance.now();
       }
-      //Handle where card already clicked
+      //Cards don't match
       if (noMatch === true) {
         card1.parentElement.classList.remove('miss');
         card2.parentElement.classList.remove('miss');
         noMatch = false;
         return;
       }
+      //Handle where card already clicked
       if (currentCard.classList.contains('show')) {
         return;
       }
