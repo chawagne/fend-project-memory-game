@@ -49,7 +49,7 @@ function makeCardsClickable() {
   let cards = document.querySelectorAll('.card');
   cards.forEach(function(currentCard) {
     currentCard.addEventListener('click', function() {
-      if (timer === null){
+      if (timer === null) {
         timer = performance.now();
       }
       //Cards don't match
@@ -93,91 +93,81 @@ function checkMatch(list, currentCard) {
     increaseCount(card1, card2);
     if (card1.classList.value !== card2.classList.value) {
       isNotMatch(card1, card2, list);
-    }
-    else {
+    } else {
       isMatch(card1, card2);
     }
   }
 }
 
-function isNotMatch(card1, card2, list){
-        card1.parentElement.classList.add('miss');
-        card2.parentElement.classList.add('miss');
-        noMatch = true;
-        closeCard(list[0]);
-        flipCard(list[0]);
-        closeCard(list[1]);
-        flipCard(list[1]);
-        openList = [];
+function isNotMatch(card1, card2, list) {
+  card1.parentElement.classList.add('miss');
+  card2.parentElement.classList.add('miss');
+  noMatch = true;
+  closeCard(list[0]);
+  flipCard(list[0]);
+  closeCard(list[1]);
+  flipCard(list[1]);
+  openList = [];
 }
 
 function isMatch(card1, card2) {
-    card1.parentElement.classList.add('match');
-    card2.parentElement.classList.add('match');
-    openList = [];
-    score += 1;
-    if (score === 8){showWinner()}
+  card1.parentElement.classList.add('match');
+  card2.parentElement.classList.add('match');
+  openList = [];
+  score += 1;
+  if (score === 8) {
+    showWinner()
+  }
 }
 
-function increaseCount(){
-  count +=1;
+function increaseCount() {
+  count += 1;
   let moves = document.querySelector('.moves')
   moves.textContent = count;
   checkRank();
 }
 
- function checkRank(){
-   if (count === 14){
-     stars[2].classList.add('fa-star-o');
-      }
-    if (count === 18){
-      stars[1].classList.add('fa-star-o');
-    }
- }
+function checkRank() {
+  if (count === 14) {
+    stars[2].classList.add('fa-star-o');
+  }
+  if (count === 18) {
+    stars[1].classList.add('fa-star-o');
+  }
+}
 
- function restartGame(){
-   deck.forEach(function(current, index) {
-     deckTable[index].className ='card';
-   });
-   stars.forEach(function(current, index) {
-     stars[index].className = 'fa fa-star';
-   });
-   openList = [];
-   noMatch = false;
-   card1 = null;
-   card2 = null;
-   count = 0;
-   score = 0;
-   timer = null;
-   let moves = document.querySelector('.moves')
-   moves.textContent = count;
-   deck = shuffle(deck);
-   deckTable = document.querySelectorAll('.card');
-   deck.forEach(function(current, index) {
-     deckTable[index].firstElementChild.className ='fa';
-     deckTable[index].firstElementChild.classList.add(`fa-${current}`);
-   });
-   winnerStars.textContent="";
-   winnerStats.textContent="";
-   playAgain.classList="winner play-again";
- }
+function restartGame() {
+  deck.forEach(function(current, index) {
+    deckTable[index].className = 'card';
+  });
+  stars.forEach(function(current, index) {
+    stars[index].className = 'fa fa-star';
+  });
+  openList = [];
+  noMatch = false;
+  card1 = null;
+  card2 = null;
+  count = 0;
+  score = 0;
+  timer = null;
+  let moves = document.querySelector('.moves')
+  moves.textContent = count;
+  deck = shuffle(deck);
+  deckTable = document.querySelectorAll('.card');
+  deck.forEach(function(current, index) {
+    deckTable[index].firstElementChild.className = 'fa';
+    deckTable[index].firstElementChild.classList.add(`fa-${current}`);
+  });
+  winnerStars.textContent = "";
+  winnerStats.textContent = "";
+  playAgain.classList = "winner play-again";
+}
 
-function showWinner(){
-     stars.forEach(function(current, index) {
-       let starClone = stars[index].cloneNode(true);
-       winnerStars.appendChild(starClone);
-     });
+function showWinner() {
+  stars.forEach(function(current, index) {
+    let starClone = stars[index].cloneNode(true);
+    winnerStars.appendChild(starClone);
+  });
   winnerStats.textContent = `${count} moves. ${((performance.now()-timer)/1000).toFixed(2)} seconds to complete.`
   playAgain.classList.toggle('show');
 }
-
-/*
- * set up the event listener for a card. If a card is clicked:
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
- */
