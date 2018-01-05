@@ -19,10 +19,13 @@ let deckTable = document.querySelectorAll('.card');
 let winnerStars = document.querySelector('.large-stars');
 let winnerStats = document.querySelector('.stats');
 let playAgain = document.querySelector('.play-again');
+let gameStarted = false;
 
 restartGame();
 makeCardsClickable();
 createRestartButton();
+
+
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
   var currentIndex = array.length,
@@ -51,6 +54,10 @@ function makeCardsClickable() {
     currentCard.addEventListener('click', function() {
       if (timer === null) {
         timer = performance.now();
+        gameStarted = true;
+        //function block
+        foo();
+        //end block
       }
       //Cards don't match
       if (noMatch === true) {
@@ -67,6 +74,15 @@ function makeCardsClickable() {
       openCard(currentCard);
     });
   });
+}
+
+function foo(){
+  setTimeout(function(){
+    console.log("going");
+    if (gameStarted === true){
+      foo();
+    }
+  },100);
 }
 
 function flipCard(currentCard) {
@@ -117,6 +133,7 @@ function isMatch(card1, card2) {
   score += 1;
   if (score === 8) {
     showWinner()
+    gameStarted = false;
   }
 }
 
@@ -148,11 +165,11 @@ function restartGame() {
   card1 = null;
   card2 = null;
   count = 0;
-  score = 0;
+  score = 7;
   timer = null;
   let moves = document.querySelector('.moves')
   moves.textContent = count;
-  deck = shuffle(deck);
+  //deck = shuffle(deck);
   deckTable = document.querySelectorAll('.card');
   deck.forEach(function(current, index) {
     deckTable[index].firstElementChild.className = 'fa';
