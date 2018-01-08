@@ -11,6 +11,8 @@ let card2 = null;
 let count = 0;
 //total successful moves; 8 is a win
 let score = 0;
+//ingame clock
+let visibleTimer = document.querySelector('.timer');
 let stars = document.querySelectorAll('.stars i');
 let timer = null;
 //list of all cards
@@ -20,6 +22,7 @@ let winnerStars = document.querySelector('.large-stars');
 let winnerStats = document.querySelector('.stats');
 let playAgain = document.querySelector('.play-again');
 let gameStarted = false;
+
 
 restartGame();
 makeCardsClickable();
@@ -55,9 +58,9 @@ function makeCardsClickable() {
       if (timer === null) {
         timer = performance.now();
         gameStarted = true;
-        //function block
-        foo();
-        //end block
+        //Starting the game clock
+        updateTimerCheck(timer);
+        //
       }
       //Cards don't match
       if (noMatch === true) {
@@ -76,13 +79,19 @@ function makeCardsClickable() {
   });
 }
 
-function foo(){
+function updateTimerCheck(timer){
   setTimeout(function(){
-    console.log("going");
-    if (gameStarted === true){
-      foo();
+    let currentDisplayedTime = parseInt(document.querySelector('.timer').textContent);
+    let currentTime = Math.floor((performance.now()-timer)/1000);
+    console.log(`was ${currentDisplayedTime} is ${currentTime}`);
+    if(currentDisplayedTime !==  currentTime){
+      document.querySelector('.timer').textContent=currentTime;
     }
-  },100);
+
+    if (gameStarted === true){
+      updateTimerCheck(timer);
+    }
+  },1000);
 }
 
 function flipCard(currentCard) {
@@ -177,6 +186,7 @@ function restartGame() {
   });
   winnerStars.textContent = "";
   winnerStats.textContent = "";
+  visibleTimer.textContent = "0";
   playAgain.classList = "winner play-again";
 }
 
