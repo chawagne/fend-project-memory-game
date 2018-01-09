@@ -1,3 +1,9 @@
+/*
+Variables:
+
+
+*/
+
 //List of cards
 let deck = ['bolt', 'bolt', 'diamond', 'diamond', 'paper-plane-o', 'paper-plane-o', 'anchor', 'anchor', 'leaf', 'leaf', 'bicycle', 'bicycle', 'bomb', 'bomb', 'cube', 'cube'];
 //Cards opened
@@ -84,13 +90,11 @@ function updateTimerCheck(timer){
     let currentDisplayedTime = parseInt(document.querySelector('.timer').textContent);
     let currentTime = Math.floor((performance.now()-timer)/1000);
     console.log(`was ${currentDisplayedTime} is ${currentTime}`);
-    if(currentDisplayedTime !==  currentTime){
+    if((currentDisplayedTime !==  currentTime)&&(gameStarted === true)){
       document.querySelector('.timer').textContent=currentTime;
-    }
-
-    if (gameStarted === true){
       updateTimerCheck(timer);
     }
+
   },1000);
 }
 
@@ -174,11 +178,11 @@ function restartGame() {
   card1 = null;
   card2 = null;
   count = 0;
-  score = 7;
+  score = 0;
   timer = null;
   let moves = document.querySelector('.moves')
   moves.textContent = count;
-  //deck = shuffle(deck);
+  deck = shuffle(deck);
   deckTable = document.querySelectorAll('.card');
   deck.forEach(function(current, index) {
     deckTable[index].firstElementChild.className = 'fa';
