@@ -14,7 +14,8 @@ deckTable - DOMNode Collection - Collection of all card DOMNodes
 winnerStars - DOMNode Collection - Displayed stars on winner screen.
 winnerStats - DOMNode - Displayed stats on winner screen.
 playAgain - DOMNOde - Play again button.
-gameStarted - boolean - True if the game has started
+gameStarted - boolean - True if the game has started.
+timerID - method - setTimeout method used when updateTimerCheck is called.
 */
 
 let deck = ['bolt', 'bolt', 'diamond', 'diamond', 'paper-plane-o', 'paper-plane-o', 'anchor', 'anchor', 'leaf', 'leaf', 'bicycle', 'bicycle', 'bomb', 'bomb', 'cube', 'cube'];
@@ -32,6 +33,7 @@ let winnerStars = document.querySelector('.large-stars');
 let winnerStats = document.querySelector('.stats');
 let playAgain = document.querySelector('.play-again');
 let gameStarted = false;
+let timerID = null;
 
 
 restartGame();
@@ -71,8 +73,8 @@ function makeCardsClickable() {
       if (timer === null) {
         timer = performance.now();
         gameStarted = true;
-        //If the game timer hasn't started, star it.
-        updateTimerCheck(timer);
+        //If the game timer hasn't started, start it.
+        updateTimerCheck();
       }
       //When cards don't match, clicking flips both cards back over.
       if (noMatch === true) {
@@ -91,18 +93,22 @@ function makeCardsClickable() {
   });
 }
 //Updates the ingame timer every second.
-function updateTimerCheck(timer){
-  setTimeout(function(){
-    let currentDisplayedTime = parseInt(document.querySelector('.timer').textContent);
-    //Calculates game time and rounds down to the nearest second.
-    let currentTime = Math.floor((performance.now()-timer)/1000);
-    if((currentDisplayedTime !==  currentTime)&&(gameStarted === true)){
-      document.querySelector('.timer').textContent=currentTime;
-      updateTimerCheck(timer);
-    }
-
-  },1000);
+function updateTimerCheck() {
+  timerID = setTimeout(updateGameTimer, 1000);
 }
+
+//Updates the visible timer.
+function updateGameTimer() {
+  let currentDisplayedTime = parseInt(document.querySelector('.timer').textContent);
+  //Calculates game time and rounds down to the nearest second.
+  let currentTime = Math.floor((performance.now() - timer) / 1000);
+  if (gameStarted === true) {
+    document.querySelector('.timer').textContent = currentTime;
+    updateTimerCheck();
+  }
+
+}
+
 //Makes a card flip.
 function flipCard(currentCard) {
   currentCard.classList.toggle('show');
@@ -195,6 +201,7 @@ function restartGame() {
   });
   openList = [];
   noMatch = false;
+  gameStarted = false;
   card1 = null;
   card2 = null;
   count = 0;
@@ -212,6 +219,8 @@ function restartGame() {
   winnerStats.textContent = "";
   visibleTimer.textContent = "0";
   playAgain.classList = "winner play-again";
+  //Stop the game timer from running.
+  clearTimeout(timerID);
 }
 
 //When a player wins, display a winner modal.
